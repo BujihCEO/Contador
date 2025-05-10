@@ -1,5 +1,6 @@
+const urlParams = new URLSearchParams(window.location.search);
+
 function obterDataDaURL() {
-    const urlParams = new URLSearchParams(window.location.search);
     const dataStr = urlParams.get("data");
     if (!dataStr) return null;
 
@@ -32,36 +33,6 @@ function calcularDiferenca(dataInicio) {
     const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
 
     return { anos, diasRestantes, horas, minutos, segundos };
-}
-
-function calcularProgresso(dataInicio) {
-    const agora = new Date();
-    let inicioMes = new Date(agora.getFullYear(), agora.getMonth(), dataInicio.getDate());
-    let proximoMes = new Date(agora.getFullYear(), agora.getMonth() + 1, dataInicio.getDate());
-
-    if (agora < inicioMes) {
-        inicioMes.setMonth(inicioMes.getMonth() - 1);
-        proximoMes.setMonth(proximoMes.getMonth() - 1);
-    }
-
-    let progressoMes = ((agora - inicioMes) / (proximoMes - inicioMes)) * 100;
-    let diasParaProximoMes = Math.ceil((proximoMes - agora) / (1000 * 60 * 60 * 24));
-
-    let inicioAno = new Date(dataInicio);
-    inicioAno.setFullYear(agora.getFullYear());
-
-    let proximoAno = new Date(dataInicio);
-    proximoAno.setFullYear(agora.getFullYear() + 1);
-
-    if (agora < inicioAno) {
-        inicioAno.setFullYear(inicioAno.getFullYear() - 1);
-        proximoAno.setFullYear(proximoAno.getFullYear() - 1);
-    }
-
-    let progressoAno = ((agora - inicioAno) / (proximoAno - inicioAno)) * 100;
-    let diasParaProximoAno = Math.ceil((proximoAno - agora) / (1000 * 60 * 60 * 24));
-
-    return { progressoMes, progressoAno, diasParaProximoMes, diasParaProximoAno };
 }
 
 function iniciarContador(dataInicio) {
@@ -109,7 +80,7 @@ function iniciarContador(dataInicio) {
         `"Você é a razão de tantas histórias bonitas 🌷"`,
         `"Ser mãe é carregar o amor no colo e no coração ❤️"`,
         `"Você é mais forte do que imagina e mais amada do que percebe ✨"`,
-        `"Obrigada por cada abraço que cura e cada palavra que conforta 🤗"`,
+        `"Seu abraço me cura e suas palavras me confortam 🤗"`,
         `"Hoje é um ótimo dia para lembrar: você é INCRIVÉL 🌟"`
     ];
 
@@ -125,11 +96,105 @@ function iniciarContador(dataInicio) {
     }
     mostrarFrases();
 
-    var imageTeste;
+    function getYoutube() {
+        var yt = urlParams.get("yt");
+        if (yt) {
+            let tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            document.body.appendChild(tag);
 
-    function checkImg() {
+            let player;
+            window.onYouTubeIframeAPIReady = function() {
+                player = new YT.Player('video', {
+                    videoId: yt,
+                    playerVars: { autoplay: 1, rel: 0, loop: 1, controls: 0},
+                    events: {
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+                document.querySelector(".videoBox").classList.add('on');
+            }
 
+            function onPlayerStateChange(event) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    console.log("O vídeo foi iniciado!");
+                }
+            }
+        }
     }
+    // getYoutube();
+
+    const metas = [
+        {   tempo: 1, 
+            icone: '🍼',
+            titulo: "Sobrevivemos ao primeiro mês!",
+            texto: 'Parecia que eu não ia conseguir, mas até que levo jeito.'
+        },
+        {   tempo: 6, 
+            icone: '🦷',
+            titulo: "Primeiros dentinhos!",
+            texto: 'São tão pequeninhos, ser mordidas por eles parece um privilegio.'
+        },
+        {   tempo: 12, 
+            icone: '🎂',
+            titulo: "Primeiro aninho!",
+            texto: ''
+        },
+        {   tempo: 60, 
+            icone: '👑',
+            titulo: "Mãe experiente",
+            texto: ''
+        },
+        {   tempo: 120,
+            icone: '🏆',
+            titulo: "Mestre em maternidade",
+            texto: ''
+        },
+        {   tempo: 216,
+            icone: '🎓',
+            titulo: "Jornada completa",
+            texto: ''
+        }
+    ];
+
+    function atualizarMetas() {
+        const hoje = new Date();
+        let anos = hoje.getFullYear() - dataInicio.getFullYear();
+        let meses = hoje.getMonth() - dataInicio.getMonth();
+        let dias = hoje.getDate() - dataInicio.getDate();
+
+        if (dias < 0) {
+            meses -= 1;
+        }
+
+        if (meses < 0) {
+            anos -= 1;
+            meses += 12;
+        }
+
+        const mesesTotais = anos * 12 + meses;
+        let checklistHTML = "";
+        metas.forEach(meta => {
+            if (mesesTotais >= meta.tempo) {
+                checklistHTML += `
+                <div class="conquista">
+                    <span class='icone'>${meta.icone}</span>
+                    <span class='titulo'>${meta.titulo}</span>
+                    <span class='texto'>${meta.texto}</span>
+                </div>`;
+            } else {
+                checklistHTML += `
+                <div class="conquista">
+                    <span class='icone'>${meta.icone}</span>
+                    <span class='titulo'> ${meta.titulo}</span>
+                    <span class='texto'>⏲ Em breve</span>
+                </div>`;
+            }
+        });
+        document.querySelector(".conquistas").innerHTML = checklistHTML;
+    }
+    atualizarMetas();
+
 }
 
 const data = obterDataDaURL();

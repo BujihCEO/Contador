@@ -4,15 +4,18 @@ body {
     justify-content: space-between;
     align-items: center;
     min-height: 100vh;
-    margin: 2em 0 0;
+    margin: 0;
     font-family: Arial, sans-serif;
     font-size: calc(100vw * 0.05);
     text-align: center;
-    background: #fff0f5;
+    --bg: #fff0f5;
+    background: var(--bg);
     color: #ff78a5;
 }
 .pagina {
     display: grid;
+    gap: 1em;
+    margin: 1em;
 }
 .contador {
     display: grid;
@@ -27,7 +30,7 @@ body {
     border-radius: 1em;
     padding: 0.5em;
     aspect-ratio: 1;
-    background: #fff0f5;
+    background: var(--bg);
     box-sizing: border-box;
 }
 
@@ -62,10 +65,10 @@ body {
 
 .marcador.vert {
     width: 4px;
-    height: 0.5em;
+    height: 0.4em;
 }
 .marcador.hori {
-    width: 0.5em;
+    width: 0.4em;
     height: 4px;
 }
 
@@ -86,9 +89,9 @@ body {
 
 h1 {
     font-size: 2.2em;
-    background: #fff0f5;
+    background: var(--bg);
     border-radius: 0.6em;
-    margin: 0.6em 0.3em;
+    margin: 0;
 }
 
 #coracoes-container {
@@ -118,40 +121,99 @@ h1 {
     }
 }
 
+.conquistas-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 2px solid;
+    border-radius: 1em; */
+}
+
+.conquistas-box > .title {
+    font-size: 1.6em;
+    font-weight: bold;
+    background: var(--bg);
+    padding: 0.3em;
+    border-radius: 1em;
+}
+
+.conquistas {
+    display: grid;
+    gap: 1em;
+}
+
+.conquista {
+    display: grid;
+    padding: 0.5em;
+    box-shadow: 0 0 0.4em #ff7aa780;
+    border-radius: 1em;
+    background: var(--bg);
+}
+
+.conquista > .icone {
+    font-size: 1.5em;
+}
+
+.conquista > .titulo {
+    font-weight: bold;
+    font-size: 1em;
+    padding: 0 0 5px;
+    margin: .3em 0 .5em;
+    border-bottom: 2px solid #ff78a53b;
+}
+
+.conquista > .texto {
+    font-size: 0.9em;
+}
+
 .frases {
     position: sticky;
     bottom: 1em;
     left: 0;
     animation: trocarFrase 5s infinite;
-    padding: 1em;
-    margin: 1em;
-    border-radius: 1em;
-    background: #fff0f5;
-    border: 4px solid;
+    padding: .5em;
+    border-radius: .7em;
+    background: var(--bg);
+    box-shadow: 0 0 0.4em #ff7aa780;
 }
 
 @keyframes trocarFrase {
     0% {
-        transform: translateY(calc(100% + 1em));
+        opacity: 0;
     }
-    10% {
-        transform: translateY(0%);
+    15% {
+        opacity: 1;
     }
-    90% {
-        transform: translateY(0);
+    85% {
+        opacity: 1;
     }
     100% {
-        transform: translateY(calc(100% + 1em));
+        opacity: 0;
     }
 }
 
-@media (min-width: 500px) {
+.videoBox.on {
+    margin: 1em;
+}
+
+.videoBox > iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 1em;
+    max-width: 500px;
+}
+
+@media (min-width: 400px) {
     body {
-        font-size: calc(500px * 0.05);
+        font-size: calc(400px * 0.05);
     }
 }
 @media (min-width: 600px) {
     .contador {
         grid-template-columns: repeat(3, auto);
+    }
+    .conquistas {
+        grid-template-columns: repeat(2, auto);
+        max-width: 600px;
     }
 }
