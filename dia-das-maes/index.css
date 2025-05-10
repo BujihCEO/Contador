@@ -12,6 +12,19 @@ body {
     background: var(--bg);
     color: #ff78a5;
 }
+
+body.cor-1 {
+    --bg: #fff0f5;
+    background: var(--bg);
+    color: #ff78a5;
+}
+
+body.cor-2 {
+    --bg: #1d1f40;
+    background: var(--bg);
+    color: #e93225;
+}
+
 .pagina {
     display: grid;
     gap: 1em;
@@ -125,16 +138,14 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* border: 2px solid;
-    border-radius: 1em; */
 }
 
-.conquistas-box > .title {
-    font-size: 1.6em;
-    font-weight: bold;
+.conquistas-box > .titulo {
+    font-size: 1.2em;
+    padding: .5em;
+    border-radius: .5em;
+    margin: 3em 0 .5em;
     background: var(--bg);
-    padding: 0.3em;
-    border-radius: 1em;
 }
 
 .conquistas {
@@ -143,11 +154,44 @@ h1 {
 }
 
 .conquista {
+    position: relative;
     display: grid;
     padding: 0.5em;
     box-shadow: 0 0 0.4em #ff7aa780;
     border-radius: 1em;
     background: var(--bg);
+    overflow: hidden;
+}
+
+.conquista > .check, .conquista > .bloqueado, .bloqueado::before, .bloqueado::after {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conquista > .check {
+    font-size: 1.4em;
+    right: .5em;
+    top: .1em;
+}
+
+.bloqueado, .bloqueado::before {
+    width: 100%;
+    height: 100%;
+}
+
+.conquista > .bloqueado::before {
+    content: '';
+    background: currentColor;
+    opacity: 0.5;
+}
+
+.conquista > .bloqueado::after {
+    content: '🔒';
+    right: 0.3rem;
+    top: 0.1em;
+    font-size: 1.4em;
 }
 
 .conquista > .icone {
@@ -166,15 +210,19 @@ h1 {
     font-size: 0.9em;
 }
 
-.frases {
+.frases-box {
     position: sticky;
-    bottom: 1em;
+    bottom: 0;
     left: 0;
+    width: 100%;
+    padding: 3em 1em 1em;
+    margin-top: -3em;
+    box-sizing: border-box;
+    background: linear-gradient(to top, var(--bg) calc(100% - 2.5em), transparent 100%);
+}
+
+.frases-box > .frases {
     animation: trocarFrase 5s infinite;
-    padding: .5em;
-    border-radius: .7em;
-    background: var(--bg);
-    box-shadow: 0 0 0.4em #ff7aa780;
 }
 
 @keyframes trocarFrase {

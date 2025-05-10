@@ -36,6 +36,14 @@ function calcularDiferenca(dataInicio) {
 }
 
 function iniciarContador(dataInicio) {
+    function colorir() {
+        const cor = urlParams.get("cor");
+        if (cor) {
+            document.body.classList.add('cor-'+cor);
+        }
+    }
+    colorir();
+
     var contador = document.querySelector(".contador");
     function atualizarContador() {
         const { anos, diasRestantes, horas, minutos, segundos } = calcularDiferenca(dataInicio);
@@ -125,6 +133,11 @@ function iniciarContador(dataInicio) {
     // getYoutube();
 
     const metas = [
+        {   tempo: 0, 
+            icone: '🤰',
+            titulo: "Estou grávida!!",
+            texto: 'A barriga cresceu e não foi de comida. Alguém falou em comida?'
+        },
         {   tempo: 1, 
             icone: '🍼',
             titulo: "Sobrevivemos ao primeiro mês!",
@@ -138,22 +151,27 @@ function iniciarContador(dataInicio) {
         {   tempo: 12, 
             icone: '🎂',
             titulo: "Primeiro aninho!",
-            texto: ''
+            texto: 'Inesquecivél! O primeiro de muitos que viram.'
         },
         {   tempo: 60, 
             icone: '👑',
-            titulo: "Mãe experiente",
-            texto: ''
+            titulo: "Mestre em maternidade",
+            texto: 'Venci as frauldas sujas e o choro de madrugada, nada mais me abala, eu acho...'
         },
         {   tempo: 120,
             icone: '🏆',
-            titulo: "Mestre em maternidade",
-            texto: ''
+            titulo: "Mamãe experiente",
+            texto: '10 anos no cargo, já posso pedir promoção? Cadê meu aumento (de paciência)?'
+        },
+        {   tempo: 120,
+            icone: '🎸',
+            titulo: "Mãe de adolescente",
+            texto: 'Agora temos um ser humano com hormônios e playlists próprias em casa. Força!'
         },
         {   tempo: 216,
             icone: '🎓',
-            titulo: "Jornada completa",
-            texto: ''
+            titulo: "Eles crecem tão rápido",
+            texto: 'Foi num piscar de olhos. Derrepente adulto. Mas quem manda ainda sou eu, viu?'
         }
     ];
 
@@ -178,6 +196,7 @@ function iniciarContador(dataInicio) {
             if (mesesTotais >= meta.tempo) {
                 checklistHTML += `
                 <div class="conquista">
+                    <span class='check'>&#10003;</span>
                     <span class='icone'>${meta.icone}</span>
                     <span class='titulo'>${meta.titulo}</span>
                     <span class='texto'>${meta.texto}</span>
@@ -185,9 +204,10 @@ function iniciarContador(dataInicio) {
             } else {
                 checklistHTML += `
                 <div class="conquista">
+                    <span class='bloqueado'></span>
                     <span class='icone'>${meta.icone}</span>
                     <span class='titulo'> ${meta.titulo}</span>
-                    <span class='texto'>⏲ Em breve</span>
+                    <span class='texto'>Em breve</span>
                 </div>`;
             }
         });
