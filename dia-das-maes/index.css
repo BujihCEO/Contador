@@ -127,6 +127,8 @@ h1 {
     margin: 1em;
     border-radius: 1em;
     background: #ffdae6;
+    background: #fff0f5;
+    border: 4px solid;
 }
 
 @keyframes trocarFrase {
