@@ -69,10 +69,10 @@ function iniciarContador(dataInicio) {
     function atualizarContador() {
         const { anos, diasRestantes, horas, minutos, segundos } = calcularDiferenca(dataInicio);
         let texto = `
-            <div><p>${anos}</p> ${anos >= 1 ? '<p>anos</p>' : '<p>ano</p>'}</div>
-            <div><p>${diasRestantes}</p> ${anos >= 1 ? '<p>dias</p>' : '<p>dia</p>'}</div>
-            <div><p>${horas}</p> ${anos >= 1 ? '<p>horas</p>' : '<p>hora</p>'}</div>
-            <div><p>${minutos}</p> ${anos >= 1 ? '<p>minutos</p>' : '<p>minuto</p>'}</div>
+            <div><p>${anos}</p> ${anos > 1 ? '<p>anos</p>' : '<p>ano</p>'}</div>
+            <div><p>${diasRestantes}</p> ${diasRestantes > 1 ? '<p>dias</p>' : '<p>dia</p>'}</div>
+            <div><p>${horas}</p> ${horas > 1 ? '<p>horas</p>' : '<p>hora</p>'}</div>
+            <div><p>${minutos}</p> ${minutos > 1 ? '<p>minutos</p>' : '<p>minuto</p>'}</div>
             <div><p>${segundos}</p> <p>segundos</p></div>
             <div class="relogio">
                 <div class="pontero" style="transform: rotate(${segundos * 6}deg)"></div>
