@@ -146,7 +146,7 @@ function iniciarContador(dataInicio) {
         {   tempo: 6, 
             icone: '🦷',
             titulo: "Primeiros dentinhos!",
-            texto: 'São tão pequeninhos, ser mordidas por eles parece um privilegio.'
+            texto: 'São tão pequeninos. Ser mordida por eles parece um privilegio.'
         },
         {   tempo: 12, 
             icone: '🎂',
