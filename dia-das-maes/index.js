@@ -75,7 +75,11 @@ function iniciarContador(dataInicio) {
             <div><p>${minutos}</p> ${anos >= 1 ? '<p>minutos</p>' : '<p>minuto</p>'}</div>
             <div><p>${segundos}</p> <p>segundos</p></div>
             <div class="relogio">
-                <div class="segundos" style="transform: rotate(${segundos * 6}deg)"></div>
+                <div class="pontero" style="transform: rotate(${segundos * 6}deg)"></div>
+                <div class="marcador topo vert"></div>
+                <div class="marcador direita hori"></div>
+                <div class="marcador base vert"></div>
+                <div class="marcador esquerda hori"></div>
             </div>
         `;
         contador.innerHTML = texto;
@@ -120,6 +124,12 @@ function iniciarContador(dataInicio) {
         setInterval(trocarFrase, 5000);
     }
     mostrarFrases();
+
+    var imageTeste;
+
+    function checkImg() {
+
+    }
 }
 
 const data = obterDataDaURL();
