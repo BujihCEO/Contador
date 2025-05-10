@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempo de Relacionamento</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #contador { font-size: 24px; font-weight: bold; margin-top: 20px; }
+        .container { width: 80%; margin: 20px auto; text-align: left; }
+        .barra-container { background: #ddd; width: 100%; height: 20px; border-radius: 10px; overflow: hidden; }
+        .barra { height: 100%; width: 0%; background: #4caf50; transition: width 0.5s; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { font-size: 18px; margin: 5px 0; }
+        .check { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <p id="mensagem"></p>
+    <div id="contador"></div>
+    <h1>Sendo a melhor mãe do mundo</h1>
+
+    <div class="container">
+        <h3>Progresso para o próximo mês:</h3>
+        <div class="barra-container">
+            <div id="barraMes" class="barra"></div>
+        </div>
+        <p id="textoMes"></p>
+    </div>
+
+    <div class="container">
+        <h3>Progresso para o próximo ano:</h3>
+        <div class="barra-container">
+            <div id="barraAno" class="barra"></div>
+        </div>
+        <p id="textoAno"></p>
+    </div>
+
+    <div class="container">
+        <h3>Metas de Relacionamento</h3>
+        <ul id="checklist" class="checklist"></ul>
+    </div>
+
+    <script>
+        function obterDataDaURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const dataStr = urlParams.get("data");
+            if (!dataStr) return null;
+
+            const partes = dataStr.split("-");
+            if (partes.length !== 3) return null;
+
+            const dia = parseInt(partes[0], 10);
+            const mes = parseInt(partes[1], 10) - 1;
+            const ano = parseInt(partes[2], 10);
+
+            return new Date(ano, mes, dia);
+        }
+
+        function calcularDiferenca(dataInicio) {
+            const agora = new Date();
+            let anos = agora.getFullYear() - dataInicio.getFullYear();
+            let dataAniversario = new Date(dataInicio);
+            dataAniversario.setFullYear(agora.getFullYear());
+
+            if (agora < dataAniversario) {
+                anos--;
+            }
+
+            const diferenca = agora - dataInicio;
+            const diasTotais = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const diasRestantes = diasTotais - anos * 365 - Math.floor(anos / 4);
+
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            return { anos, diasRestantes, horas, minutos, segundos };
+        }
+
+        function calcularProgresso(dataInicio) {
+            const agora = new Date();
+            let inicioMes = new Date(agora.getFullYear(), agora.getMonth(), dataInicio.getDate());
+            let proximoMes = new Date(agora.getFullYear(), agora.getMonth() + 1, dataInicio.getDate());
+
+            if (agora < inicioMes) {
+                inicioMes.setMonth(inicioMes.getMonth() - 1);
+                proximoMes.setMonth(proximoMes.getMonth() - 1);
+            }
+
+            let progressoMes = ((agora - inicioMes) / (proximoMes - inicioMes)) * 100;
+            let diasParaProximoMes = Math.ceil((proximoMes - agora) / (1000 * 60 * 60 * 24));
+
+            let inicioAno = new Date(dataInicio);
+            inicioAno.setFullYear(agora.getFullYear());
+
+            let proximoAno = new Date(dataInicio);
+            proximoAno.setFullYear(agora.getFullYear() + 1);
+
+            if (agora < inicioAno) {
+                inicioAno.setFullYear(inicioAno.getFullYear() - 1);
+                proximoAno.setFullYear(proximoAno.getFullYear() - 1);
+            }
+
+            let progressoAno = ((agora - inicioAno) / (proximoAno - inicioAno)) * 100;
+            let diasParaProximoAno = Math.ceil((proximoAno - agora) / (1000 * 60 * 60 * 24));
+
+            return { progressoMes, progressoAno, diasParaProximoMes, diasParaProximoAno };
+        }
+
+        function atualizarMetas(dataInicio) {
+            const agora = new Date();
+            const mesesPassados = (agora.getFullYear() - dataInicio.getFullYear()) * 12 + (agora.getMonth() - dataInicio.getMonth());
+            const anosPassados = agora.getFullYear() - dataInicio.getFullYear();
+
+            const metas = [
+                ...Array.from({ length: 11 }, (_, i) => `${i + 1} mês`),
+                "1 ano", "2 anos", "3 anos", "4 anos", "5 anos", "10 anos", "15 anos", "20 anos",
+                "25 anos", "30 anos", "35 anos", "40 anos", "45 anos", "50 anos"
+            ];
+
+            const checklist = document.getElementById("checklist");
+            checklist.innerHTML = "";
+
+            metas.forEach((meta, index) => {
+                const li = document.createElement("li");
+                const metaValor = index < 11 ? index + 1 : parseInt(meta.split(" ")[0]); // Define meses e anos corretamente
+
+                if ((index < 11 && metaValor <= mesesPassados) || (index >= 11 && metaValor <= anosPassados)) {
+                    li.innerHTML = `${meta} ✅`; // Meta alcançada
+                    li.classList.add("check");
+                } else {
+                    li.textContent = meta; // Meta ainda não alcançada
+                }
+                
+                checklist.appendChild(li);
+            });
+        }
+
+        function iniciarContador(dataInicio) {
+            function atualizarContador() {
+                const { anos, diasRestantes, horas, minutos, segundos } = calcularDiferenca(dataInicio);
+                let texto = anos >= 1 ? `${anos} anos, ` : "";
+                texto += `${diasRestantes} dias, ${horas} horas, ${minutos} minutos, ${segundos} segundos`;
+
+                document.getElementById("contador").textContent = texto;
+
+                const { progressoMes, progressoAno, diasParaProximoMes, diasParaProximoAno } = calcularProgresso(dataInicio);
+                document.getElementById("barraMes").style.width = `${progressoMes}%`;
+                document.getElementById("textoMes").textContent = `Faltam ${diasParaProximoMes} dias para o próximo mês completo`;
+                document.getElementById("barraAno").style.width = `${progressoAno}%`;
+                document.getElementById("textoAno").textContent = `Faltam ${diasParaProximoAno} dias para o próximo ano completo`;
+
+                atualizarMetas(dataInicio);
+            }
+
+            atualizarContador();
+            setInterval(atualizarContador, 1000);
+        }
+
+        const data = obterDataDaURL();
+        if (data) iniciarContador(data);
+    </script>
+</body>
+</html>

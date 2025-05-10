@@ -1,0 +1,115 @@
+body { 
+    font-family: Arial, sans-serif; 
+    text-align: center; 
+    background: #fff0f5;
+    color: #ff6969;
+    font-size: calc(100vw * 0.05);
+    margin: 0;
+}
+main {
+    margin: 50px 0;
+}
+.contador {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    font-weight: bold;
+    gap: 1em;
+}
+.contador > div {
+    border: 4px solid;
+    border-radius: 1em;
+    padding: 1em;
+    min-width: 8em;
+    aspect-ratio: 1;
+    background: #fff0f5;
+    box-sizing: border-box;
+}
+.contador > .relogio {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    border-radius: 50%;
+    margin: auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+.contador > .relogio > .segundos {
+    content: '';
+    position: relative;
+    height: 45%;
+    width: 4px;
+    top: 5%;
+    background: currentColor;
+    border-radius: 8px;
+    transform-origin: bottom center;
+}
+
+.contador > div > p {
+    margin: 0;
+}
+.contador > div > p:nth-child(1) {
+    font-size: 4rem;
+}
+.contador > div > p:nth-child(2) {
+    font-size: 1.4rem;
+}
+
+h1 {
+    font-size: 2.2em;
+    background: #fff0f5;
+    border-radius: 0.6em;
+}
+
+#coracoes-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+}
+  
+.coracao {
+    position: absolute;
+    color: red;
+    font-size: 20px;
+    animation: subir 8s linear forwards;
+}
+
+@keyframes subir {
+    0% {
+      transform: translateY(100vh) scale(1);
+    }
+    100% {
+      transform: translateY(-110vh) scale(1.5);
+    }
+}
+
+.frases {
+    position: sticky;
+    bottom: 1em;
+    left: 0;
+    animation: trocarFrase 5s infinite;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 1em;
+    background: #ffdae6;
+}
+
+@keyframes trocarFrase {
+    0% {
+        transform: translateY(calc(100% + 1em));
+    }
+    10% {
+        transform: translateY(0%);
+    }
+    90% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(calc(100% + 1em));
+    }
+}
